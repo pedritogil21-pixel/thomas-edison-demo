@@ -4,8 +4,11 @@ import { WhatsAppIcon, PinIcon, ClockIcon, StarIcon } from "./icons";
 
 export function Hero() {
   return (
-    <section id="top" className="hero-bg relative overflow-hidden bg-ink text-white py-[76px] md:py-[76px] pt-[76px] pb-[100px]">
-      <div className="w-[min(1120px,92%)] mx-auto relative z-[1]">
+    <section
+      id="top"
+      className="hero-bg relative overflow-hidden bg-ink text-white min-h-[calc(100svh-65px)] flex items-center py-16 lg:py-20"
+    >
+      <div className="w-[min(1120px,92%)] mx-auto relative z-[1] w-full">
         <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-yellow text-ink font-display text-xs font-bold tracking-[0.08em] uppercase">
           Moquegua · {TAGLINE}
         </span>
