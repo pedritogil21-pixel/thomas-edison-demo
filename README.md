@@ -1,24 +1,37 @@
-# Academia Thomas Edison · demo
+# Academia Thomas Edison · Landing
 
-Landing one-page 100% vanilla (HTML + CSS + JS en `index.html`).
+Sitio preuniversitario de Academia Thomas Edison (Moquegua, Perú). Next.js 15 App Router + Tailwind v4 + TypeScript.
+
+## Desarrollo local
+
+```bash
+npm install
+npm run dev
+```
+
+Abre [http://localhost:3000](http://localhost:3000).
 
 ## Deploy
 
-Desde esta carpeta:
+Push a `main` → deploy automático a Vercel (proyecto `thomas`).
+
+## Variables de entorno
+
+Configuradas en Vercel → Settings → Environment Variables:
+
+| Variable | Uso |
+|---|---|
+| `RESEND_API_KEY` | Envío del formulario de inscripción |
+| `RESEND_FROM` | Remitente (por defecto `onboarding@resend.dev`) |
+| `RESEND_TO` | Destinatario de leads |
+| `NEXT_PUBLIC_SITE_URL` | URL canónica para SEO/sitemap |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 measurement ID |
+
+## Estructura
 
 ```
-vercel --prod
+app/             rutas y layout
+components/      secciones UI
+lib/             constantes + helpers
+public/          imágenes (logo, fotos)
 ```
-
-Copia la URL y pégala en `MENSAJES-WHATSAPP.md` → bloque "Thomas Edison".
-
-## Personalizar tras cerrar venta
-
-En `index.html`, al final:
-
-```js
-const WA_PHONE = "51953631118";
-const ACADEMIA = "Academia Thomas Edison";
-```
-
-También `<title>`, descripción, dirección y carreras UNAM del formulario según lo que pida el dueño.

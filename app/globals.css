@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@theme {
+  --color-yellow: #f4c430;
+  --color-yellow-dark: #c89a11;
+  --color-yellow-soft: #fff3c4;
+  --color-ink: #0f0f0f;
+  --color-graphite: #1a1a1a;
+  --color-paper: #fafaf5;
+  --color-muted: #6b6b60;
+
+  --font-display: var(--font-space-grotesk), "Space Grotesk", system-ui, sans-serif;
+  --font-body: var(--font-inter), "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+  --radius-brand: 14px;
+
+  --shadow-brand: 0 18px 40px -18px rgba(244, 196, 48, 0.45);
+  --shadow-deep: 0 22px 50px -20px rgba(0, 0, 0, 0.4);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.brand-mark::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border: 2px dashed var(--color-yellow);
+  border-radius: 12px;
+  opacity: 0.35;
+}
+
+.hero-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(800px 400px at 15% 0%, rgba(244, 196, 48, 0.25), transparent 60%),
+    radial-gradient(600px 300px at 100% 80%, rgba(244, 196, 48, 0.15), transparent 60%);
+  pointer-events: none;
+}
+
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(244, 196, 48, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.hero-h1 em {
+  font-style: normal;
+  color: var(--color-yellow);
+  position: relative;
+  display: inline-block;
+}
+
+.hero-h1 em::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 8px;
+  background: var(--color-yellow);
+  opacity: 0.18;
+  z-index: -1;
+}
+
+.ciclo-list li::before {
+  content: "→ ";
+  color: var(--color-yellow);
+  font-weight: 700;
+}
+
+input,
+select {
+  font: inherit;
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+input:focus,
+select:focus {
+  outline: 0;
+  border-color: var(--color-yellow-dark);
+  box-shadow: 0 0 0 4px rgba(244, 196, 48, 0.28);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
