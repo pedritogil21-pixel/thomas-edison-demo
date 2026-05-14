@@ -98,6 +98,27 @@ select:focus {
   box-shadow: 0 0 0 4px rgba(244, 196, 48, 0.28);
 }
 
+/* WhatsApp FAB pulse */
+@keyframes fab-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(37, 211, 102, 0.55),
+      0 22px 50px -20px rgba(0, 0, 0, 0.4);
+  }
+  60% {
+    box-shadow:
+      0 0 0 18px rgba(37, 211, 102, 0),
+      0 22px 50px -20px rgba(0, 0, 0, 0.4);
+  }
+}
+.fab-wa {
+  animation: fab-pulse 2.6s ease-in-out infinite;
+}
+.fab-wa:hover {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -106,5 +127,8 @@ select:focus {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .fab-wa {
+    animation: none !important;
   }
 }

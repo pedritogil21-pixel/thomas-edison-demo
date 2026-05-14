@@ -4,6 +4,7 @@ import "./globals.css";
 import { ACADEMIA, TAGLINE } from "@/lib/constants";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { allSchemas } from "@/lib/seo/schemas";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -90,6 +91,7 @@ export default function RootLayout({
     <html lang="es-PE" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <body>
         {children}
+        <FloatingWhatsApp />
         <JsonLd data={allSchemas()} />
       </body>
     </html>
