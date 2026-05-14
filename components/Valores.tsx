@@ -54,7 +54,7 @@ export function Valores() {
               </>
             );
             const className =
-              "block bg-white border border-ink/10 rounded-[14px] p-[26px] transition-all hover:border-yellow-dark hover:-translate-y-[3px]";
+              "block bg-white border border-ink/10 rounded-[14px] p-[26px] transition-all duration-300 ease-out hover:border-yellow-dark hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgba(244,196,48,0.35)]";
             return href ? (
               <Link key={title} href={href} className={className}>
                 {inner}

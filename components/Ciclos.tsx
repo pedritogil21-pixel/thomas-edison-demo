@@ -20,7 +20,7 @@ export function Ciclos() {
           {ciclos.map((c) => (
             <article
               key={c.title}
-              className="bg-graphite border border-yellow/25 rounded-[14px] p-[22px] flex flex-col gap-2.5 transition-all hover:border-yellow hover:-translate-y-[3px] text-white"
+              className="bg-graphite border border-yellow/25 rounded-[14px] p-[22px] flex flex-col gap-2.5 transition-all duration-300 ease-out hover:border-yellow hover:-translate-y-1 hover:shadow-[0_22px_50px_-20px_rgba(244,196,48,0.4)] text-white"
             >
               <span className="self-start text-[11px] font-bold tracking-[0.12em] uppercase bg-yellow text-ink px-2.5 py-1 rounded font-display">
                 {c.tag}

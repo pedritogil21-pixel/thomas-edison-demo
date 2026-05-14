@@ -58,10 +58,15 @@ export function FAQ() {
                   id={panelId}
                   role="region"
                   aria-labelledby={btnId}
-                  hidden={!isOpen}
-                  className="px-5 lg:px-7 pb-5 text-muted leading-relaxed text-[15px]"
+                  className={`grid transition-all duration-300 ease-out ${
+                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
                 >
-                  {item.a}
+                  <div className="overflow-hidden">
+                    <div className="px-5 lg:px-7 pb-5 text-muted leading-relaxed text-[15px]">
+                      {item.a}
+                    </div>
+                  </div>
                 </div>
               </li>
             );

@@ -31,7 +31,7 @@ export function Docentes() {
           {docentes.map((d) => (
             <article
               key={d.name}
-              className="bg-ink text-white border border-ink rounded-[14px] p-[22px] transition-transform hover:-translate-y-0.5"
+              className="bg-ink text-white border border-ink rounded-[14px] p-[22px] transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.015] hover:shadow-[0_18px_40px_-18px_rgba(15,15,15,0.55)] hover:border-yellow"
             >
               <div className="w-[54px] h-[54px] rounded-full bg-yellow text-ink grid place-items-center font-display font-bold text-lg mb-3">
                 {d.initials}

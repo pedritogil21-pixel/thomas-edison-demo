@@ -187,11 +187,13 @@ export function Wizard() {
         />
       </div>
 
-      <Question
-        question={q}
-        selected={selected}
-        onSelect={handleSelect}
-      />
+      <div key={q.id} className="animate-fade-in-up">
+        <Question
+          question={q}
+          selected={selected}
+          onSelect={handleSelect}
+        />
+      </div>
 
       <div className="mt-8 flex items-center justify-between gap-3">
         <button

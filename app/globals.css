@@ -98,6 +98,21 @@ select:focus {
   box-shadow: 0 0 0 4px rgba(244, 196, 48, 0.28);
 }
 
+/* Fade-in suave para transiciones entre pasos del wizard */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 280ms ease-out;
+}
+
 /* WhatsApp FAB pulse */
 @keyframes fab-pulse {
   0%,
