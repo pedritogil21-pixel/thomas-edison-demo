@@ -17,9 +17,12 @@ type StoredState = {
 export function Wizard() {
   const [step, setStep] = useState(-1); // -1 = intro, 0..N-1 = preguntas, N = resultado
   const [answers, setAnswers] = useState<Respuestas>({});
-  const [hydrated, setHydrated] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  // Cargar estado guardado al montar
+  // Cargar estado guardado de localStorage despues del primer render.
+  // El server-render y el primer render del cliente coinciden (step=-1)
+  // asi que no hay hydration mismatch. Luego setState transiciona al
+  // estado guardado si existe.
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -33,12 +36,13 @@ export function Wizard() {
     } catch {
       // ignore parse errors, empezar de cero
     }
-    setHydrated(true);
+    setMounted(true);
   }, []);
 
-  // Guardar despues de cada cambio
+  // Guardar despues de cada cambio (solo despues de mount para evitar
+  // sobrescribir el estado guardado en el primer render).
   useEffect(() => {
-    if (!hydrated) return;
+    if (!mounted) return;
     if (step === -1 && Object.keys(answers).length === 0) {
       localStorage.removeItem(STORAGE_KEY);
       return;
@@ -51,7 +55,7 @@ export function Wizard() {
     } catch {
       // localStorage lleno o bloqueado, no critico
     }
-  }, [answers, step, hydrated]);
+  }, [answers, step, mounted]);
 
   function start() {
     setStep(0);
@@ -83,14 +87,6 @@ export function Wizard() {
     } catch {
       // ignore
     }
-  }
-
-  if (!hydrated) {
-    return (
-      <div className="min-h-[60vh] grid place-items-center text-muted">
-        <div className="animate-pulse">Cargando…</div>
-      </div>
-    );
   }
 
   // Pantalla resultado
