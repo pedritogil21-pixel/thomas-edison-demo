@@ -55,25 +55,26 @@ export function FooterMapa() {
 
         <div>
           <h4 className="text-yellow font-display text-lg m-0 mb-3">Dónde estamos</h4>
-          <div className="bg-graphite border border-yellow/25 rounded-[14px] p-3.5">
-            <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa referencial" className="w-full h-auto block">
-              <rect width="320" height="180" fill="#1a1a1a" />
-              <g stroke="rgba(244,196,48,0.25)" strokeWidth="1">
-                <path d="M0 40 L320 40" />
-                <path d="M0 80 L320 80" />
-                <path d="M0 120 L320 120" />
-                <path d="M80 0 L80 180" />
-                <path d="M160 0 L160 180" />
-                <path d="M240 0 L240 180" />
-              </g>
-              <rect x="40" y="76" width="240" height="8" fill="rgba(244,196,48,0.4)" />
-              <text x="160" y="70" fontFamily="Space Grotesk, sans-serif" fontSize="10" fill="rgba(244,196,48,0.9)" textAnchor="middle">CALLE MOQUEGUA</text>
-              <circle cx="160" cy="80" r="9" fill="#f4c430" />
-              <circle cx="160" cy="80" r="16" fill="none" stroke="#f4c430" strokeOpacity="0.4" />
-              <text x="160" y="108" fontFamily="Space Grotesk, sans-serif" fontSize="10" fontWeight="700" fill="#fff" textAnchor="middle">Thomas Edison · 360</text>
-              <text x="160" y="165" fontFamily="Inter, sans-serif" fontSize="9" fill="rgba(255,255,255,0.55)" textAnchor="middle">Centro de Moquegua</text>
-            </svg>
+          <div className="rounded-[14px] overflow-hidden border border-yellow/25 bg-graphite">
+            <iframe
+              title="Ubicación de Academia Thomas Edison en Moquegua"
+              src={`https://www.google.com/maps?q=${DIRECCION.latitude},${DIRECCION.longitude}&z=17&output=embed`}
+              width="100%"
+              height="220"
+              style={{ border: 0, display: "block" }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
           </div>
+          <a
+            href={`https://www.google.com/maps/place/?q=place_id:${DIRECCION.placeId}`}
+            target="_blank"
+            rel="noopener"
+            className="inline-flex items-center gap-2 mt-3 text-xs text-yellow hover:text-white font-display font-bold tracking-wide uppercase"
+          >
+            Cómo llegar →
+          </a>
         </div>
       </div>
 
