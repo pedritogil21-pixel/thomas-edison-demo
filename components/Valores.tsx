@@ -1,10 +1,13 @@
+import Link from "next/link";
 import { SparkleIcon, BookIcon, UsersIcon } from "./icons";
 
 const items = [
   {
     Icon: SparkleIcon,
     title: "Test vocacional incluido",
-    body: "Antes de elegir carrera, evaluamos tus intereses y aptitudes. Ingresas con una decisión pensada, no improvisada.",
+    body: "Antes de elegir carrera, evaluamos tus intereses y aptitudes. Hacé el test ahora — 8 preguntas, 2 minutos.",
+    href: "/test-vocacional",
+    cta: "Hacer test →",
   },
   {
     Icon: BookIcon,
@@ -35,18 +38,33 @@ export function Valores() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-[18px]">
-          {items.map(({ Icon, title, body }) => (
-            <article
-              key={title}
-              className="bg-white border border-ink/10 rounded-[14px] p-[26px] transition-all hover:border-yellow-dark hover:-translate-y-[3px]"
-            >
-              <div className="w-12 h-12 rounded-[10px] bg-yellow text-ink grid place-items-center mb-3.5">
-                <Icon width={22} height={22} />
-              </div>
-              <h3 className="font-display text-xl mb-2">{title}</h3>
-              <p className="text-muted text-[15px] m-0">{body}</p>
-            </article>
-          ))}
+          {items.map(({ Icon, title, body, href, cta }) => {
+            const inner = (
+              <>
+                <div className="w-12 h-12 rounded-[10px] bg-yellow text-ink grid place-items-center mb-3.5">
+                  <Icon width={22} height={22} />
+                </div>
+                <h3 className="font-display text-xl mb-2">{title}</h3>
+                <p className="text-muted text-[15px] m-0">{body}</p>
+                {cta && (
+                  <span className="mt-3 inline-flex items-center gap-1 text-yellow-dark font-display font-bold text-sm">
+                    {cta}
+                  </span>
+                )}
+              </>
+            );
+            const className =
+              "block bg-white border border-ink/10 rounded-[14px] p-[26px] transition-all hover:border-yellow-dark hover:-translate-y-[3px]";
+            return href ? (
+              <Link key={title} href={href} className={className}>
+                {inner}
+              </Link>
+            ) : (
+              <article key={title} className={className}>
+                {inner}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
