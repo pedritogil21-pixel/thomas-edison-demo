@@ -130,7 +130,11 @@ export function FormInscripcion() {
 
           {/* Success view */}
           {state === "success" && (
-            <div className="rounded-[14px] border border-yellow/40 bg-yellow-soft p-7 flex flex-col gap-4">
+            <div
+              role="status"
+              aria-live="polite"
+              className="rounded-[14px] border border-yellow/40 bg-yellow-soft p-7 flex flex-col gap-4"
+            >
               <div className="w-12 h-12 rounded-full bg-yellow grid place-items-center text-ink">
                 <CheckIcon width={26} height={26} />
               </div>
@@ -233,6 +237,7 @@ export function FormInscripcion() {
               {state === "error" && (
                 <div
                   role="alert"
+                  aria-live="assertive"
                   className="rounded-[10px] border border-red-400/40 bg-red-50 text-red-800 text-sm p-3"
                 >
                   <strong>No pudimos enviar tu inscripción.</strong> {errorMsg}

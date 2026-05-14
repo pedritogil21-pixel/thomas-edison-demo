@@ -90,7 +90,10 @@ export default function RootLayout({
   return (
     <html lang="es-PE" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <body>
-        {children}
+        <a href="#contenido" className="skip-link">
+          Saltar al contenido principal
+        </a>
+        <div id="contenido">{children}</div>
         <FloatingWhatsApp />
         <JsonLd data={allSchemas()} />
       </body>

@@ -66,6 +66,17 @@ export function FooterMapa() {
               referrerPolicy="no-referrer-when-downgrade"
               allowFullScreen
             />
+            <noscript>
+              <div className="p-4 text-sm text-white/70">
+                Activa JavaScript para ver el mapa.{" "}
+                <a
+                  href={`https://www.google.com/maps/place/?q=place_id:${DIRECCION.placeId}`}
+                  className="text-yellow underline"
+                >
+                  Abrir en Google Maps
+                </a>
+              </div>
+            </noscript>
           </div>
           <a
             href={`https://www.google.com/maps/place/?q=place_id:${DIRECCION.placeId}`}

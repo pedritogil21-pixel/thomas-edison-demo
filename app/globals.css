@@ -22,6 +22,29 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Skip link: oculto hasta el focus, salta directo al contenido principal */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 1rem;
+  z-index: 100;
+  background: var(--color-yellow);
+  color: var(--color-ink);
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: var(--shadow-deep);
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  left: 1rem;
+  outline: 3px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
 body {
   font-family: var(--font-body);
   color: var(--color-ink);
