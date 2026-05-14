@@ -1,38 +1,5 @@
 import { waUrl, msgReservaCiclo } from "@/lib/whatsapp";
-
-type Ciclo = {
-  tag: string;
-  title: string;
-  when: string;
-  bullets: string[];
-};
-
-const ciclos: Ciclo[] = [
-  {
-    tag: "5to secundaria",
-    title: "CEPRE UNAM Anual",
-    when: "Mar — Dic · turno tarde",
-    bullets: ["Áreas UNAM completas", "Simulacro mensual", "Orientación vocacional"],
-  },
-  {
-    tag: "Egresados",
-    title: "CEPRE UNAM Intensivo",
-    when: "May — Ago · mañana",
-    bullets: ["Preparación acelerada", "Balotario UNAM", "Tutoría individual"],
-  },
-  {
-    tag: "Todos los niveles",
-    title: "Ordinario UNAM",
-    when: "Jul — Set",
-    bullets: ["Enfoque al examen ordinario", "Repasos por área", "Simulacro cada semana"],
-  },
-  {
-    tag: "Refuerzo",
-    title: "Verano Edison",
-    when: "Ene — Feb · vacacional",
-    bullets: ["Razonamiento + Letras", "Ciencias básicas", "Hábitos de estudio"],
-  },
-];
+import { ciclos } from "@/lib/content/ciclos";
 
 export function Ciclos() {
   return (
