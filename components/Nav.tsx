@@ -18,8 +18,10 @@ export function Nav() {
               alt={ACADEMIA_SHORT}
               width={40}
               height={40}
+              sizes="40px"
               className="w-9 h-9 object-contain"
               priority
+              fetchPriority="high"
             />
           </span>
           {ACADEMIA_SHORT}

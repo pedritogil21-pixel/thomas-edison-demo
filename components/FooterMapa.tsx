@@ -14,6 +14,8 @@ export function FooterMapa() {
               alt={ACADEMIA_SHORT}
               width={44}
               height={44}
+              sizes="44px"
+              loading="lazy"
               className="w-11 h-11 rounded-full bg-white p-1"
             />
             <h4 className="text-yellow font-display text-lg m-0">{ACADEMIA_SHORT}</h4>
