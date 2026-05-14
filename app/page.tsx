@@ -4,6 +4,7 @@ import { Valores } from "@/components/Valores";
 import { Ciclos } from "@/components/Ciclos";
 import { PorqueEdison } from "@/components/PorqueEdison";
 import { Docentes } from "@/components/Docentes";
+import { FAQ } from "@/components/FAQ";
 import { FormInscripcion } from "@/components/FormInscripcion";
 import { FooterMapa } from "@/components/FooterMapa";
 import { Reveal } from "@/components/Reveal";
@@ -17,6 +18,7 @@ export default function Page() {
       <Reveal as="section"><Ciclos /></Reveal>
       <Reveal as="section"><PorqueEdison /></Reveal>
       <Reveal as="section"><Docentes /></Reveal>
+      <Reveal as="section"><FAQ /></Reveal>
       <Reveal as="section"><FormInscripcion /></Reveal>
       <FooterMapa />
     </>

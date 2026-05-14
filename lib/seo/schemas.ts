@@ -6,6 +6,7 @@ import {
   ANIO_FUNDACION,
 } from "@/lib/constants";
 import { ciclos, type Ciclo } from "@/lib/content/ciclos";
+import { faq } from "@/lib/content/faq";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://thomas-smoky.vercel.app";
@@ -99,6 +100,21 @@ export function courseSchema(ciclo: Ciclo) {
   };
 }
 
+export function faqPageSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a,
+      },
+    })),
+  };
+}
+
 export function allSchemas() {
-  return [organizationSchema(), ...ciclos.map(courseSchema)];
+  return [organizationSchema(), ...ciclos.map(courseSchema), faqPageSchema()];
 }
