@@ -5,15 +5,7 @@ import { ACADEMIA } from "@/lib/constants";
 import { waUrl } from "@/lib/whatsapp";
 import { WhatsAppIcon, LockIcon, CheckIcon } from "./icons";
 
-const carreras = [
-  "",
-  "Ingeniería Agroindustrial",
-  "Ingeniería Ambiental",
-  "Ingeniería de Sistemas",
-  "Ingeniería Pesquera",
-  "Gestión Pública",
-  "Otra",
-];
+type FormState = "idle" | "submitting" | "success" | "error";
 
 const ciclosOptions = [
   "CEPRE UNAM Anual",
@@ -22,32 +14,85 @@ const ciclosOptions = [
   "Verano Edison",
 ];
 
+// Carreras agrupadas por area UNAM/sur-Peru (positioning B)
+const carrerasGrupos = [
+  {
+    label: "Biomédicas",
+    items: ["Medicina Humana", "Enfermería", "Odontología", "Obstetricia", "Tecnología Médica"],
+  },
+  {
+    label: "Ingenierías",
+    items: [
+      "Ingeniería Agroindustrial",
+      "Ingeniería Ambiental",
+      "Ingeniería Civil",
+      "Ingeniería de Sistemas",
+      "Ingeniería de Minas",
+      "Ingeniería Pesquera",
+    ],
+  },
+  {
+    label: "Sociales",
+    items: ["Gestión Pública", "Administración", "Contabilidad", "Derecho", "Educación"],
+  },
+];
+
+function buildWaMessage(data: Record<string, string>): string {
+  return (
+    `Hola ${ACADEMIA}, quiero inscribirme.\n` +
+    `• Nombre: ${data.nombre}\n` +
+    `• Celular: ${data.celular}\n` +
+    `• Colegio: ${data.colegio || "-"}\n` +
+    `• Carrera de interés: ${data.carrera || "Aún no decido"}\n` +
+    `• Ciclo: ${data.ciclo || "-"}`
+  );
+}
+
 export function FormInscripcion() {
-  const [submitting, setSubmitting] = useState(false);
+  const [state, setState] = useState<FormState>("idle");
+  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [lastData, setLastData] = useState<Record<string, string>>({});
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSubmitting(true);
-
     const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
-    if (!data.nombre || !data.celular) {
+
+    if (!form.checkValidity()) {
       form.reportValidity();
-      setSubmitting(false);
       return;
     }
 
-    const text =
-      `Hola ${ACADEMIA}, quiero inscribirme.\n` +
-      `• Nombre: ${data.nombre}\n` +
-      `• Celular: ${data.celular}\n` +
-      `• Colegio: ${data.colegio || "-"}\n` +
-      `• Carrera de interés: ${data.carrera || "Aún no decido"}\n` +
-      `• Ciclo: ${data.ciclo || "-"}`;
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    setLastData(data);
+    setState("submitting");
+    setErrorMsg("");
 
-    window.open(waUrl(text), "_blank", "noopener");
-    setSubmitting(false);
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const json = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+
+      if (!res.ok || !json.ok) {
+        throw new Error(json.error || `HTTP ${res.status}`);
+      }
+
+      setState("success");
+      // Disparamos WhatsApp en paralelo para reforzar el canal
+      window.open(waUrl(buildWaMessage(data)), "_blank", "noopener");
+    } catch (err) {
+      console.error("Lead submit failed:", err);
+      setErrorMsg(err instanceof Error ? err.message : "Error desconocido");
+      setState("error");
+    }
   }
+
+  const inputClass =
+    "px-3.5 py-3 rounded-[10px] border border-ink/10 bg-paper text-ink transition-all";
+  const labelClass = "text-[13px] font-bold text-ink grid gap-1.5 font-display";
 
   return (
     <section id="inscripcion" className="bg-paper py-[72px]">
@@ -64,8 +109,8 @@ export function FormInscripcion() {
               Reserva tu vacante en 1 minuto.
             </h2>
             <p className="text-muted">
-              Completa el formulario y tus datos llegan directo al WhatsApp de la dirección. Coordinamos
-              ciclo, horario y precio sin llamadas innecesarias.
+              Completa el formulario y nuestro equipo te contacta el mismo día.
+              Coordinamos ciclo, horario y precio sin llamadas innecesarias.
             </p>
             <ul className="list-none p-0 mt-4 grid gap-3">
               <li className="flex gap-3 items-start text-ink">
@@ -83,80 +128,144 @@ export function FormInscripcion() {
             </ul>
           </div>
 
-          <form onSubmit={handleSubmit} noValidate className="grid gap-3.5">
-            <label className="text-[13px] font-bold text-ink grid gap-1.5 font-display">
-              Nombre completo
-              <input
-                required
-                type="text"
-                name="nombre"
-                placeholder="Ej. Ana Choque Flores"
-                autoComplete="name"
-                className="px-3.5 py-3 rounded-[10px] border border-ink/10 bg-paper text-ink transition-all"
-              />
-            </label>
-            <label className="text-[13px] font-bold text-ink grid gap-1.5 font-display">
-              Celular (WhatsApp)
-              <input
-                required
-                type="tel"
-                name="celular"
-                placeholder="Ej. 987 654 321"
-                autoComplete="tel"
-                pattern="[0-9 +]{7,}"
-                className="px-3.5 py-3 rounded-[10px] border border-ink/10 bg-paper text-ink transition-all"
-              />
-            </label>
-            <label className="text-[13px] font-bold text-ink grid gap-1.5 font-display">
-              Colegio de procedencia
-              <input
-                type="text"
-                name="colegio"
-                placeholder="Ej. I.E. Simón Bolívar"
-                className="px-3.5 py-3 rounded-[10px] border border-ink/10 bg-paper text-ink transition-all"
-              />
-            </label>
-            <label className="text-[13px] font-bold text-ink grid gap-1.5 font-display">
-              Carrera de interés
-              <select
-                name="carrera"
-                className="px-3.5 py-3 rounded-[10px] border border-ink/10 bg-paper text-ink transition-all"
-                defaultValue=""
+          {/* Success view */}
+          {state === "success" && (
+            <div className="rounded-[14px] border border-yellow/40 bg-yellow-soft p-7 flex flex-col gap-4">
+              <div className="w-12 h-12 rounded-full bg-yellow grid place-items-center text-ink">
+                <CheckIcon width={26} height={26} />
+              </div>
+              <h3 className="font-display text-2xl m-0">¡Listo, {lastData.nombre?.split(" ")[0]}!</h3>
+              <p className="m-0 text-ink/75">
+                Recibimos tus datos y te abrimos WhatsApp para que coordines en el mismo
+                instante con la dirección. Si la ventana de WhatsApp no se abrió,
+                tocá el botón:
+              </p>
+              <a
+                href={waUrl(buildWaMessage(lastData))}
+                target="_blank"
+                rel="noopener"
+                className="inline-flex items-center justify-center gap-2.5 px-[22px] py-3.5 rounded-full bg-ink text-yellow font-bold font-display"
               >
-                <option value="">Aún no decido</option>
-                {carreras.slice(1).map((c) => (
-                  <option key={c}>{c}</option>
-                ))}
-              </select>
-            </label>
-            <label className="text-[13px] font-bold text-ink grid gap-1.5 font-display">
-              Ciclo que te interesa
-              <select
-                name="ciclo"
-                className="px-3.5 py-3 rounded-[10px] border border-ink/10 bg-paper text-ink transition-all"
-                defaultValue={ciclosOptions[0]}
+                <WhatsAppIcon />
+                Abrir WhatsApp ahora
+              </a>
+            </div>
+          )}
+
+          {/* Form view (idle, submitting, error) */}
+          {state !== "success" && (
+            <form onSubmit={handleSubmit} noValidate className="grid gap-3.5">
+              {/* Honeypot — invisible para humanos, accesible solo a bots ingenuos */}
+              <div
+                aria-hidden="true"
+                style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}
               >
-                {ciclosOptions.map((c) => (
-                  <option key={c}>{c}</option>
-                ))}
-              </select>
-            </label>
+                <label>
+                  No completar este campo
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    defaultValue=""
+                  />
+                </label>
+              </div>
 
-            <button
-              type="submit"
-              disabled={submitting}
-              className="mt-1 bg-ink text-yellow px-[22px] py-3.5 rounded-full font-bold cursor-pointer inline-flex items-center justify-center gap-2.5 font-display hover:-translate-y-px hover:bg-graphite disabled:opacity-60 disabled:cursor-not-allowed transition-all"
-              style={{ boxShadow: "var(--shadow-deep)" }}
-            >
-              <WhatsAppIcon />
-              {submitting ? "Enviando…" : "Enviar al WhatsApp Edison"}
-            </button>
+              <label className={labelClass}>
+                Nombre completo
+                <input
+                  required
+                  type="text"
+                  name="nombre"
+                  placeholder="Ej. Ana Choque Flores"
+                  autoComplete="name"
+                  minLength={2}
+                  maxLength={80}
+                  className={inputClass}
+                />
+              </label>
+              <label className={labelClass}>
+                Celular (WhatsApp)
+                <input
+                  required
+                  type="tel"
+                  name="celular"
+                  placeholder="Ej. 987 654 321"
+                  autoComplete="tel"
+                  pattern="(\+?51\s?)?9\d{2}\s?\d{3}\s?\d{3}"
+                  className={inputClass}
+                />
+              </label>
+              <label className={labelClass}>
+                Colegio de procedencia
+                <input
+                  type="text"
+                  name="colegio"
+                  placeholder="Ej. I.E. Simón Bolívar"
+                  maxLength={120}
+                  className={inputClass}
+                />
+              </label>
+              <label className={labelClass}>
+                Carrera de interés
+                <select name="carrera" className={inputClass} defaultValue="">
+                  <option value="">Aún no decido</option>
+                  {carrerasGrupos.map((g) => (
+                    <optgroup key={g.label} label={g.label}>
+                      {g.items.map((c) => (
+                        <option key={c}>{c}</option>
+                      ))}
+                    </optgroup>
+                  ))}
+                  <option>Otra</option>
+                </select>
+              </label>
+              <label className={labelClass}>
+                Ciclo que te interesa
+                <select name="ciclo" className={inputClass} defaultValue={ciclosOptions[0]}>
+                  {ciclosOptions.map((c) => (
+                    <option key={c}>{c}</option>
+                  ))}
+                </select>
+              </label>
 
-            <span className="text-xs text-muted inline-flex items-center gap-2 font-body font-medium">
-              <LockIcon width={14} height={14} />
-              Tus datos solo se usan para coordinar tu matrícula.
-            </span>
-          </form>
+              {state === "error" && (
+                <div
+                  role="alert"
+                  className="rounded-[10px] border border-red-400/40 bg-red-50 text-red-800 text-sm p-3"
+                >
+                  <strong>No pudimos enviar tu inscripción.</strong> {errorMsg}
+                  <br />
+                  <span>Probá de nuevo o escribínos directo por WhatsApp con el botón verde flotante.</span>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={state === "submitting"}
+                className="mt-1 bg-ink text-yellow px-[22px] py-3.5 rounded-full font-bold cursor-pointer inline-flex items-center justify-center gap-2.5 font-display hover:-translate-y-px hover:bg-graphite disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+                style={{ boxShadow: "var(--shadow-deep)" }}
+              >
+                {state === "submitting" ? (
+                  <>
+                    <span className="inline-block w-4 h-4 border-2 border-yellow border-t-transparent rounded-full animate-spin" />
+                    Enviando…
+                  </>
+                ) : (
+                  <>
+                    <CheckIcon />
+                    Reservar mi vacante
+                  </>
+                )}
+              </button>
+
+              <span className="text-xs text-muted inline-flex items-center gap-2 font-body font-medium">
+                <LockIcon width={14} height={14} />
+                Tus datos solo se usan para coordinar tu matrícula.
+              </span>
+            </form>
+          )}
         </div>
       </div>
     </section>
