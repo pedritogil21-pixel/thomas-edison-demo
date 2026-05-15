@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ACADEMIA_SHORT, EMAIL, DIRECCION, HORARIO_DISPLAY, WA_PHONE_DISPLAY, TAGLINE } from "@/lib/constants";
 import { waUrl, MSG_DEFAULT } from "@/lib/whatsapp";
 import { WhatsAppIcon, PinIcon, ClockIcon, MailIcon } from "./icons";
+import { TrackedAnchor } from "./analytics/TrackedAnchor";
 
 export function FooterMapa() {
   return (
@@ -24,15 +25,17 @@ export function FooterMapa() {
             Academia preuniversitaria · preparación para universidades del sur del Perú.
             Centro de Moquegua.
           </p>
-          <a
+          <TrackedAnchor
             href={waUrl(MSG_DEFAULT)}
             target="_blank"
             rel="noopener"
+            event="whatsapp_click"
+            params={{ source: "footer" }}
             className="inline-flex items-center gap-2.5 px-[18px] py-3 rounded-full bg-[#25D366] text-[#062e14] font-bold text-[15px] mt-2.5 font-display"
           >
             <WhatsAppIcon />
             {WA_PHONE_DISPLAY}
-          </a>
+          </TrackedAnchor>
         </div>
 
         <div>

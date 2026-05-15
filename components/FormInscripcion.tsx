@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { ACADEMIA } from "@/lib/constants";
 import { waUrl } from "@/lib/whatsapp";
+import { events } from "@/lib/analytics";
 import { WhatsAppIcon, LockIcon, CheckIcon } from "./icons";
 
 type FormState = "idle" | "submitting" | "success" | "error";
@@ -81,6 +82,7 @@ export function FormInscripcion() {
       }
 
       setState("success");
+      events.leadFormSubmit(data.carrera);
       // Disparamos WhatsApp en paralelo para reforzar el canal
       window.open(waUrl(buildWaMessage(data)), "_blank", "noopener");
     } catch (err) {

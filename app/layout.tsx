@@ -5,6 +5,7 @@ import { ACADEMIA, TAGLINE } from "@/lib/constants";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { allSchemas } from "@/lib/seo/schemas";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
+import { GA } from "@/components/analytics/GA";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -92,6 +93,7 @@ export default function RootLayout({
         <div id="contenido">{children}</div>
         <FloatingWhatsApp />
         <JsonLd data={allSchemas()} />
+        <GA />
       </body>
     </html>
   );

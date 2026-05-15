@@ -1,6 +1,7 @@
 import { TAGLINE, DIRECCION, HORARIO_DISPLAY } from "@/lib/constants";
 import { waUrl, MSG_DEFAULT } from "@/lib/whatsapp";
 import { WhatsAppIcon, PinIcon, ClockIcon, StarIcon } from "./icons";
+import { TrackedAnchor } from "./analytics/TrackedAnchor";
 
 export function Hero() {
   return (
@@ -24,16 +25,18 @@ export function Hero() {
         </p>
 
         <div className="flex flex-wrap gap-3">
-          <a
+          <TrackedAnchor
             href={waUrl(MSG_DEFAULT)}
             target="_blank"
             rel="noopener"
+            event="whatsapp_click"
+            params={{ source: "hero_cta" }}
             className="inline-flex items-center gap-2.5 px-[22px] py-3.5 rounded-full bg-yellow text-ink font-bold text-[15px] font-display transition-transform hover:-translate-y-0.5"
             style={{ boxShadow: "var(--shadow-brand)" }}
           >
             <WhatsAppIcon />
             Inscríbete al CEPRE UNAM
-          </a>
+          </TrackedAnchor>
           <a
             href="#ciclos"
             className="inline-flex items-center gap-2.5 px-[22px] py-3.5 rounded-full bg-transparent text-white font-bold text-[15px] font-display border border-white/30 hover:border-white/60 hover:bg-white/5 transition-colors"

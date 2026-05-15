@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ACADEMIA_SHORT } from "@/lib/constants";
 import { waUrl, MSG_DEFAULT } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "./icons";
+import { TrackedAnchor } from "./analytics/TrackedAnchor";
 
 export function Nav() {
   return (
@@ -34,16 +35,18 @@ export function Nav() {
           <a href="#inscripcion" className="hover:text-ink">Inscripción</a>
         </nav>
 
-        <a
+        <TrackedAnchor
           href={waUrl(MSG_DEFAULT)}
           target="_blank"
           rel="noopener"
+          event="whatsapp_click"
+          params={{ source: "nav" }}
           className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-yellow text-ink font-bold text-sm font-display"
           style={{ boxShadow: "var(--shadow-brand)" }}
         >
           <WhatsAppIcon width={16} height={16} />
           WhatsApp
-        </a>
+        </TrackedAnchor>
       </div>
     </header>
   );

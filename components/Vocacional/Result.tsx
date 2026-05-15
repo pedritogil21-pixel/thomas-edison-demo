@@ -1,8 +1,12 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import { getArea, type AreaScore } from "@/lib/vocacional/score";
 import { type Respuestas } from "@/lib/vocacional/score";
 import { ACADEMIA } from "@/lib/constants";
 import { waUrl } from "@/lib/whatsapp";
+import { events } from "@/lib/analytics";
 import { WhatsAppIcon, CheckIcon } from "../icons";
 
 type Props = {
@@ -12,6 +16,17 @@ type Props = {
 };
 
 export function Result({ results, onRestart }: Props) {
+  // Trackear completion una sola vez al montar el resultado
+  useEffect(() => {
+    if (results.length > 0) {
+      events.testVocacionalComplete(
+        results[0]!.area,
+        results[1]?.area,
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   if (results.length === 0) {
     return (
       <div className="max-w-[680px] mx-auto px-5 py-14 text-center">

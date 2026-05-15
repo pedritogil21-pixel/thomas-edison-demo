@@ -1,5 +1,6 @@
 import { waUrl, msgReservaCiclo } from "@/lib/whatsapp";
 import { ciclos } from "@/lib/content/ciclos";
+import { TrackedAnchor } from "./analytics/TrackedAnchor";
 
 export function Ciclos() {
   return (
@@ -35,14 +36,16 @@ export function Ciclos() {
               <span className="text-[13px] text-yellow font-bold mt-1.5">
                 Consulta precios por WhatsApp
               </span>
-              <a
+              <TrackedAnchor
                 href={waUrl(msgReservaCiclo(c.title))}
                 target="_blank"
                 rel="noopener"
+                event="ciclo_card_click"
+                params={{ ciclo: c.title }}
                 className="mt-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-yellow text-ink font-bold text-sm font-display hover:bg-white"
               >
                 Reservar vacante
-              </a>
+              </TrackedAnchor>
             </article>
           ))}
         </div>

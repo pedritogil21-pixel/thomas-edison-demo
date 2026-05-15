@@ -2,9 +2,17 @@
 
 import { useState } from "react";
 import { faq } from "@/lib/content/faq";
+import { events } from "@/lib/analytics";
 
 export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
+
+  function handleToggle(idx: number, isCurrentlyOpen: boolean) {
+    setOpen(isCurrentlyOpen ? null : idx);
+    if (!isCurrentlyOpen) {
+      events.faqOpen(faq[idx]!.q);
+    }
+  }
 
   return (
     <section id="faq" className="bg-paper py-[72px]">
@@ -37,7 +45,7 @@ export function FAQ() {
                   type="button"
                   aria-expanded={isOpen}
                   aria-controls={panelId}
-                  onClick={() => setOpen(isOpen ? null : idx)}
+                  onClick={() => handleToggle(idx, isOpen)}
                   className="w-full text-left px-5 lg:px-7 py-5 flex items-center justify-between gap-4 cursor-pointer hover:bg-yellow-soft/30 transition-colors"
                 >
                   <span className="font-display font-bold text-ink text-[16px] lg:text-[17px] leading-snug">
